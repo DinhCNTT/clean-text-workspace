@@ -24,13 +24,14 @@ const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={onOpenHistory}
-            className="flex items-center gap-1.5 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 px-4 py-2 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-500/20 transition-all font-semibold text-sm shadow-sm"
+            className="flex items-center gap-1.5 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 px-3 sm:px-4 py-2 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-500/20 transition-all font-semibold text-sm shadow-sm"
+            title="Lịch sử"
           >
-            <Clock size={16} /> Lịch sử
+            <Clock size={16} /> <span className="hidden sm:inline">Lịch sử</span>
           </button>
-          <div className="flex items-center gap-2 bg-white/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 shadow-sm px-4 py-2 rounded-full backdrop-blur-md">
+          <div className="flex items-center gap-2 bg-white/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 shadow-sm px-3 sm:px-4 py-2 rounded-full backdrop-blur-md">
             <User size={16} className="text-indigo-500" />
-            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">{currentUser.username}</span>
+            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200 hidden sm:inline max-w-[100px] truncate">{currentUser.username}</span>
             <button
               onClick={onLogout}
               className="ml-2 text-slate-400 hover:text-red-500 transition-colors"
@@ -43,10 +44,11 @@ const Navbar: React.FC<NavbarProps> = ({
       ) : (
         <button
           onClick={onOpenAuth}
-          className="flex items-center gap-2 bg-white/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-600 transition-all duration-300 px-4 py-2 rounded-full backdrop-blur-md text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold text-sm"
+          className="flex items-center gap-2 bg-white/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-600 transition-all duration-300 px-3 sm:px-4 py-2 rounded-full backdrop-blur-md text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold text-sm"
+          title="Đăng nhập"
         >
           <User size={16} />
-          Đăng nhập
+          <span className="hidden sm:inline">Đăng nhập</span>
         </button>
       )}
       <button

@@ -11,7 +11,7 @@ const Header: React.FC = () => {
       </div>
 
       {/* Title */}
-      <h1 className="gradient-title text-5xl md:text-6xl font-black tracking-tight leading-tight mb-4">
+      <h1 className="gradient-title text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight mb-4">
         Clean Text Workspace
       </h1>
       <p className="text-slate-600 dark:text-slate-400 text-base md:text-lg max-w-xl mx-auto leading-relaxed">

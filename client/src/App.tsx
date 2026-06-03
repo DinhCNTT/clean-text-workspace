@@ -224,7 +224,7 @@ function App() {
           {/* ── INPUT PANEL ── */}
           <div className="flex flex-col gap-3">
             {/* Panel header */}
-            <div className="flex items-center justify-between px-1">
+            <div className="flex flex-wrap items-center justify-between px-1 gap-2">
               <div className="label-tag bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/20 shadow-sm">
                 <ClipboardPaste size={12} />
                 Dán văn bản vào đây
@@ -241,8 +241,7 @@ function App() {
                 contentEditable
                 suppressContentEditableWarning
                 onInput={handleInput}
-                className="content-area w-full min-h-[420px] p-6 rounded-3xl overflow-y-auto focus:outline-none"
-                style={{ minHeight: '420px' }}
+                className="content-area w-full min-h-[250px] md:min-h-[420px] p-4 md:p-6 rounded-3xl overflow-y-auto focus:outline-none"
                 data-placeholder="Dán (Ctrl+V) đoạn văn bản bị lỗi vào đây..."
               />
               {/* Placeholder CSS trick */}
@@ -258,12 +257,12 @@ function App() {
           {/* ── OUTPUT PANEL ── */}
           <div className="flex flex-col gap-3">
             {/* Panel header */}
-            <div className="flex items-center justify-between px-1">
+            <div className="flex flex-wrap items-center justify-between px-1 gap-2">
               <div className="label-tag bg-pink-50 dark:bg-pink-500/10 text-pink-700 dark:text-pink-300 border border-pink-200 dark:border-pink-500/20 shadow-sm">
                 <Sparkles size={12} />
                 Văn bản đã làm sạch
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3">
 
                 {outputHtml && (
                   <div className="flex items-center gap-2">
@@ -298,12 +297,11 @@ function App() {
               {outputHtml ? (
                 <div
                   id="output-display"
-                  className="content-area w-full min-h-[420px] p-6 rounded-3xl overflow-y-auto animate-fade-in"
+                  className="content-area w-full min-h-[250px] md:min-h-[420px] p-4 md:p-6 rounded-3xl overflow-y-auto animate-fade-in"
                   dangerouslySetInnerHTML={{ __html: outputHtml }}
-                  style={{ minHeight: '420px' }}
                 />
               ) : (
-                <div className="flex flex-col items-center justify-center min-h-[420px] text-center px-8 gap-4">
+                <div className="flex flex-col items-center justify-center min-h-[250px] md:min-h-[420px] text-center px-8 gap-4">
                   <div className="w-16 h-16 rounded-2xl bg-pink-100 dark:bg-pink-500/10 border border-pink-200 dark:border-pink-500/20 flex items-center justify-center shadow-sm">
                     <Sparkles size={28} className="text-pink-500 dark:text-pink-400/60" />
                   </div>
