@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { 
   Heart, Sparkles, Code2, Mail, MapPin, Phone, 
-  Bug, FileSignature, Shield, Scale, UserCheck, 
-  Globe, Lock, Zap, Database, CheckCheck, Send, Server
+  Bug, CheckCheck, Send, Server
 } from 'lucide-react';
 import Modal from './Modal';
+import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
-  const [activeModal, setActiveModal] = useState<'terms' | 'privacy' | 'bug' | null>(null);
+  const [activeModal, setActiveModal] = useState<'bug' | null>(null);
   const [bugReportStatus, setBugReportStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
   const [feedbackText, setFeedbackText] = useState('');
 
@@ -46,17 +46,26 @@ const Footer: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 mb-16">
             
             <div className="md:col-span-4 flex flex-col gap-5 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-              <h3 className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500 dark:from-indigo-400 dark:to-pink-400 flex items-center gap-2">
-                <Sparkles size={20} className="text-indigo-500" />
+              <h3 className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500 dark:from-indigo-400 dark:to-pink-400 flex items-center gap-2 group cursor-default">
+                <Sparkles size={20} className="text-indigo-500 group-hover:rotate-180 transition-transform duration-500" />
                 Clean Text
               </h3>
               <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-xs">
                 Công cụ tối ưu hóa văn bản mạnh mẽ. Xóa bỏ định dạng rác từ AI Chatbot, giữ nguyên tính nguyên bản của văn bản khi dán vào Microsoft Word.
               </p>
               <div className="flex flex-wrap gap-2 mt-1">
-                <span className="text-[11px] font-bold px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-md border border-slate-200 dark:border-slate-700 shadow-sm">React 18</span>
-                <span className="text-[11px] font-bold px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-md border border-slate-200 dark:border-slate-700 shadow-sm">Tailwind v4</span>
-                <span className="text-[11px] font-bold px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-md border border-slate-200 dark:border-slate-700 shadow-sm">Vite</span>
+                <span className="group relative overflow-hidden text-[11px] font-bold px-3 py-1.5 bg-slate-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-[#61DAFB] hover:text-[#61DAFB] dark:hover:text-[#61DAFB] transition-all duration-300 shadow-sm hover:shadow-[#61DAFB]/20 hover:-translate-y-0.5 cursor-default">
+                  <div className="absolute inset-0 bg-[#61DAFB]/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                  <span className="relative z-10">React 18</span>
+                </span>
+                <span className="group relative overflow-hidden text-[11px] font-bold px-3 py-1.5 bg-slate-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-[#38B2AC] hover:text-[#38B2AC] dark:hover:text-[#38B2AC] transition-all duration-300 shadow-sm hover:shadow-[#38B2AC]/20 hover:-translate-y-0.5 cursor-default">
+                  <div className="absolute inset-0 bg-[#38B2AC]/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                  <span className="relative z-10">Tailwind v4</span>
+                </span>
+                <span className="group relative overflow-hidden text-[11px] font-bold px-3 py-1.5 bg-slate-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-[#646CFF] hover:text-[#646CFF] dark:hover:text-[#646CFF] transition-all duration-300 shadow-sm hover:shadow-[#646CFF]/20 hover:-translate-y-0.5 cursor-default">
+                  <div className="absolute inset-0 bg-[#646CFF]/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                  <span className="relative z-10">Vite</span>
+                </span>
               </div>
             </div>
 
@@ -66,7 +75,7 @@ const Footer: React.FC = () => {
                 Tác Giả
               </h3>
               <div className="mt-1">
-                <h4 className="font-bold text-slate-800 dark:text-slate-200 text-lg">Đoàn Tuệ Định</h4>
+                <h4 className="font-bold text-slate-800 dark:text-slate-200 text-lg hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors cursor-default">Đoàn Tuệ Định</h4>
                 <p className="text-sm text-indigo-600 dark:text-indigo-400 font-semibold mt-0.5">Fresher .NET Developer</p>
               </div>
               <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -80,17 +89,23 @@ const Footer: React.FC = () => {
                 Liên Hệ
               </h3>
               <ul className="flex flex-col gap-3.5 text-sm text-slate-600 dark:text-slate-400 mt-1">
-                <li className="flex items-start gap-3">
-                  <MapPin size={16} className="text-slate-400 dark:text-slate-500 mt-0.5 shrink-0" />
-                  <span>Ho Chi Minh City, Vietnam</span>
+                <li className="flex items-start gap-3 group cursor-default">
+                  <MapPin size={16} className="text-slate-400 dark:text-slate-500 mt-0.5 shrink-0 group-hover:text-indigo-500 transition-colors" />
+                  <span className="group-hover:text-slate-800 dark:group-hover:text-slate-200 transition-colors">Ho Chi Minh City, Vietnam</span>
                 </li>
-                <li className="flex items-center gap-3">
-                  <Phone size={16} className="text-slate-400 dark:text-slate-500 shrink-0" />
-                  <a href="tel:+84842070552" className="font-medium hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">(+84) 842 070 552</a>
+                <li className="flex items-center gap-3 group">
+                  <Phone size={16} className="text-slate-400 dark:text-slate-500 shrink-0 group-hover:text-indigo-500 group-hover:-rotate-12 transition-all duration-300" />
+                  <a href="tel:+84842070552" className="font-medium relative inline-block text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                    (+84) 842 070 552
+                    <span className="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+                  </a>
                 </li>
-                <li className="flex items-center gap-3">
-                  <Mail size={16} className="text-slate-400 dark:text-slate-500 shrink-0" />
-                  <a href="mailto:dinhcm123321@gmail.com" className="font-medium hover:text-pink-600 dark:hover:text-pink-400 transition-colors">dinhcm123321@gmail.com</a>
+                <li className="flex items-center gap-3 group">
+                  <Mail size={16} className="text-slate-400 dark:text-slate-500 shrink-0 group-hover:text-pink-500 group-hover:rotate-12 transition-all duration-300" />
+                  <a href="mailto:dinhcm123321@gmail.com" className="font-medium relative inline-block text-slate-600 dark:text-slate-400 hover:text-pink-600 dark:hover:text-pink-400 transition-colors">
+                    dinhcm123321@gmail.com
+                    <span className="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-pink-500 transition-all duration-300 group-hover:w-full"></span>
+                  </a>
                 </li>
               </ul>
               
@@ -119,102 +134,18 @@ const Footer: React.FC = () => {
             <p className="text-xs text-slate-500 font-medium flex items-center justify-center gap-1.5">
               Phát triển với <Heart size={14} className="text-pink-500 fill-pink-500 animate-pulse drop-shadow-md mx-0.5" /> bởi Đoàn Tuệ Định © {new Date().getFullYear()}
             </p>
-            <div className="flex gap-6 text-xs text-slate-500 font-semibold">
-              <button onClick={() => setActiveModal('terms')} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Điều Khoản Dịch Vụ</button>
-              <button onClick={() => setActiveModal('privacy')} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Chính Sách Bảo Mật</button>
-              <button onClick={() => setActiveModal('bug')} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5"><Bug size={14}/> Góp Ý & Báo Lỗi</button>
+            <div className="flex flex-wrap gap-2 md:gap-3 text-xs font-semibold">
+              <Link to="/terms" target="_blank" className="px-3 py-1.5 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-200">Điều Khoản</Link>
+              <Link to="/privacy" target="_blank" className="px-3 py-1.5 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-200">Bảo Mật</Link>
+              <button onClick={() => setActiveModal('bug')} className="px-4 py-1.5 rounded-full bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-500/20 hover:bg-orange-100 dark:hover:bg-orange-500/30 hover:scale-105 transition-all duration-200 flex items-center gap-1.5 group shadow-sm">
+                <Bug size={14} className="group-hover:animate-bounce" /> Góp Ý & Báo Lỗi
+              </button>
             </div>
           </div>
         </div>
       </footer>
 
       {/* ── MODALS ── */}
-      <Modal isOpen={activeModal === 'terms'} onClose={() => setActiveModal(null)} title="Điều Khoản Dịch Vụ" icon={<FileSignature size={24} className="text-indigo-500" />}>
-        <div className="space-y-6">
-          <div className="p-4 rounded-2xl bg-indigo-50/50 dark:bg-indigo-500/5 border border-indigo-100 dark:border-indigo-500/10 transition-colors">
-            <p className="text-[13px] text-indigo-800 dark:text-indigo-300 font-medium leading-relaxed">
-              Chào mừng bạn đến với <strong className="font-bold text-indigo-600 dark:text-indigo-400">Clean Text Workspace</strong>. 
-              Việc bạn tiếp tục sử dụng ứng dụng đồng nghĩa với việc bạn đã đọc, hiểu và đồng ý với các điều khoản dưới đây.
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <div className="flex gap-3.5 group">
-              <div className="mt-0.5 shrink-0 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
-                <Scale size={16} />
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200 mb-1">1. Mục đích sử dụng</h4>
-                <p className="text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Công cụ cung cấp tiện ích làm sạch định dạng văn bản dư thừa, hỗ trợ chuyển đổi từ AI/Word/PDF sang môi trường soạn thảo chuyên nghiệp. Bạn đồng ý không sử dụng hệ thống để lưu trữ nội dung vi phạm pháp luật, độc hại hoặc vi phạm bản quyền.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-3.5 group">
-              <div className="mt-0.5 shrink-0 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
-                <UserCheck size={16} />
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200 mb-1">2. Tài khoản & Lịch sử</h4>
-                <p className="text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Tính năng "Lưu lịch sử" yêu cầu đăng ký tài khoản. Bạn hoàn toàn chịu trách nhiệm bảo mật thông tin đăng nhập của mình. Tác giả có quyền xóa tài khoản hoặc dữ liệu rác nếu phát hiện lạm dụng tài nguyên hệ thống (Spam).
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-3.5 group">
-              <div className="mt-0.5 shrink-0 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
-                <Globe size={16} />
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200 mb-1">3. Cập nhật & Sửa đổi</h4>
-                <p className="text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Tác giả bảo lưu quyền cập nhật, nâng cấp hoặc thay đổi tính năng của phần mềm bất kỳ lúc nào để tối ưu trải nghiệm, mà không cần phải thông báo trước.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Modal>
-
-      <Modal isOpen={activeModal === 'privacy'} onClose={() => setActiveModal(null)} title="Chính Sách Bảo Mật" icon={<Shield size={24} className="text-emerald-500" />}>
-        <div className="space-y-6">
-          <div className="relative overflow-hidden p-5 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/20">
-            <div className="relative z-10">
-              <h3 className="font-bold text-lg mb-1 flex items-center gap-2">
-                <Lock size={20} /> Cam Kết Bảo Mật
-              </h3>
-              <p className="text-emerald-50 text-sm leading-relaxed opacity-90">
-                Sự riêng tư của bạn là ưu tiên số một. Hệ thống được thiết kế với tiêu chuẩn bảo mật hiện đại để bảo vệ dữ liệu nội dung của bạn.
-              </p>
-            </div>
-            <div className="absolute -right-6 -top-6 text-emerald-400/30">
-              <Shield size={120} />
-            </div>
-          </div>
-
-          <div className="grid gap-4">
-            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50">
-              <h4 className="flex items-center gap-2 text-sm font-bold text-slate-800 dark:text-slate-200 mb-2">
-                <Zap size={16} className="text-amber-500" /> Xử Lý Offline (Client-side)
-              </h4>
-              <p className="text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                Mọi thao tác "Làm sạch văn bản" đều được thực thi trực tiếp trên RAM máy tính/điện thoại của bạn thông qua trình duyệt. Chúng tôi <strong className="font-semibold text-slate-700 dark:text-slate-300">KHÔNG</strong> thu thập, <strong className="font-semibold text-slate-700 dark:text-slate-300">KHÔNG</strong> lưu trữ ngầm những đoạn văn bản bạn copy vào khung soạn thảo.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50">
-              <h4 className="flex items-center gap-2 text-sm font-bold text-slate-800 dark:text-slate-200 mb-2">
-                <Database size={16} className="text-indigo-500" /> Lưu Trữ Đám Mây (Cloud)
-              </h4>
-              <p className="text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                Dữ liệu văn bản của bạn chỉ được tải lên Server Backend (Cơ sở dữ liệu MongoDB) <strong className="font-semibold text-indigo-600 dark:text-indigo-400">duy nhất khi</strong> bạn chủ động bấm nút "Lưu vào lịch sử". Dữ liệu này được gán với mã định danh (JWT Token) của riêng bạn, hoàn toàn cách ly với người dùng khác.
-              </p>
-            </div>
-          </div>
-        </div>
-      </Modal>
 
       <Modal isOpen={activeModal === 'bug'} onClose={() => { setActiveModal(null); setTimeout(() => setBugReportStatus('idle'), 300); }} title="Góp Ý & Báo Lỗi" icon={<Bug size={24} className="text-orange-500" />}>
         {bugReportStatus === 'sent' ? (
