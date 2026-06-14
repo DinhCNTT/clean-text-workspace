@@ -26,7 +26,7 @@ class AuthController {
       res.cookie('token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         maxAge: JWT.COOKIE_MAX_AGE
       });
 
@@ -53,7 +53,7 @@ class AuthController {
       res.clearCookie('token', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict'
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
       });
       res.status(200).json({ message: MESSAGES.AUTH.LOGOUT_SUCCESS });
     } catch (error) {
