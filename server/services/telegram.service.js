@@ -41,4 +41,4 @@ class TelegramService {
   }
 }
 
-module.exports = new TelegramService();
+export default new TelegramService();

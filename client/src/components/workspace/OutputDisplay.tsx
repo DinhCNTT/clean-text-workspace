@@ -7,9 +7,18 @@ interface OutputDisplayProps {
   copySuccess: boolean;
   onCopy: () => void;
   showToast: (msg: string, type: 'success'|'error'|'info') => void;
+  isProcessing?: boolean;
+  progress?: number;
 }
 
-const OutputDisplay: React.FC<OutputDisplayProps> = ({ outputHtml, copySuccess, onCopy, showToast }) => {
+const OutputDisplay: React.FC<OutputDisplayProps> = ({ 
+  outputHtml, 
+  copySuccess, 
+  onCopy, 
+  showToast,
+  isProcessing = false,
+  progress = 0
+}) => {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center justify-between px-1 gap-2">
@@ -45,16 +54,37 @@ const OutputDisplay: React.FC<OutputDisplayProps> = ({ outputHtml, copySuccess, 
           )}
         </div>
       </div>
+ 
+      <div className="glass-card-pink glow-pink rounded-3xl flex-1 relative overflow-hidden transition-all duration-300 min-h-[250px] md:min-h-[420px] flex flex-col">
+        {isProcessing && (
+          <div className="absolute inset-0 bg-white/85 dark:bg-slate-900/85 backdrop-blur-sm z-20 flex flex-col items-center justify-center text-center p-6 animate-fade-in">
+            <div className="relative w-20 h-20 flex items-center justify-center mb-3">
+              <div className="absolute inset-0 border-4 border-indigo-100 dark:border-slate-800 rounded-full" />
+              <div className="absolute inset-0 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+              <span className="font-bold text-sm text-slate-800 dark:text-slate-200">{progress}%</span>
+            </div>
+            <div>
+              <p className="text-slate-800 dark:text-slate-200 font-semibold mb-1 text-sm md:text-base">Đang dọn dẹp văn bản ngầm...</p>
+              <p className="text-slate-500 dark:text-slate-400 text-xs">Hàng đợi BullMQ đang xử lý tài liệu</p>
+            </div>
+            
+            <div className="w-44 bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full mt-4 overflow-hidden">
+              <div 
+                className="bg-gradient-to-r from-indigo-500 to-pink-500 h-full transition-all duration-300"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+        )}
 
-      <div className="glass-card-pink glow-pink rounded-3xl flex-1 relative overflow-hidden transition-all duration-300">
         {outputHtml ? (
           <div
             id="output-display"
-            className="content-area w-full min-h-[250px] md:min-h-[420px] p-4 md:p-6 rounded-3xl overflow-y-auto animate-fade-in leading-relaxed text-[15px] md:text-base"
+            className="content-area w-full flex-1 p-4 md:p-6 rounded-3xl overflow-y-auto animate-fade-in leading-relaxed text-[15px] md:text-base"
             dangerouslySetInnerHTML={{ __html: outputHtml }}
           />
         ) : (
-          <div className="flex flex-col items-center justify-center min-h-[250px] md:min-h-[420px] text-center px-8 gap-4">
+          <div className="flex flex-col items-center justify-center flex-1 text-center px-8 gap-4 py-8">
             <div className="w-16 h-16 rounded-2xl bg-pink-100 dark:bg-pink-500/10 border border-pink-200 dark:border-pink-500/20 flex items-center justify-center shadow-sm">
               <Sparkles size={28} className="text-pink-500 dark:text-pink-400/60" />
             </div>

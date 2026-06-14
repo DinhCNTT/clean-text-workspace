@@ -13,24 +13,24 @@ interface HistoryDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   onSelect: (html: string) => void;
+  currentUser?: any;
 }
 
-const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ isOpen, onClose, onSelect }) => {
+const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ isOpen, onClose, onSelect, currentUser }) => {
   const [histories, setHistories] = useState<HistoryItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
   const fetchHistories = async () => {
-    const token = localStorage.getItem('token');
-    if (!token) return;
+    if (!currentUser) return;
 
     setLoading(true);
     setError('');
     try {
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
       const res = await fetch(`${API_URL}/history`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       });
       if (!res.ok) throw new Error('Không thể tải lịch sử');
       const data = await res.json();
@@ -47,17 +47,16 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ isOpen, onClose, onSelect
       fetchHistories();
       setDeleteConfirmId(null);
     }
-  }, [isOpen]);
+  }, [isOpen, currentUser]);
 
   const handleDelete = async (e: React.MouseEvent, id: string) => {
     e.stopPropagation(); // Ngăn sự kiện click vào item
     
-    const token = localStorage.getItem('token');
     try {
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
       const res = await fetch(`${API_URL}/history/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       });
       
       if (!res.ok) throw new Error('Không thể xóa');

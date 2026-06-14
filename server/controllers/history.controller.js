@@ -1,4 +1,6 @@
-const historyService = require('../services/history.service');
+import historyService from '../services/history.service.js';
+import { APP_CONSTANTS } from '../common/constants/app.constant.js';
+const { MESSAGES } = APP_CONSTANTS;
 
 class HistoryController {
   async saveHistory(req, res) {
@@ -8,7 +10,7 @@ class HistoryController {
       res.status(201).json(history);
     } catch (error) {
       console.error('Lỗi khi lưu lịch sử:', error);
-      res.status(500).json({ message: 'Lỗi server khi lưu lịch sử' });
+      res.status(500).json({ message: MESSAGES.HISTORY.SAVE_ERROR });
     }
   }
 
@@ -18,22 +20,22 @@ class HistoryController {
       res.json(histories);
     } catch (error) {
       console.error('Lỗi khi tải lịch sử:', error);
-      res.status(500).json({ message: 'Lỗi server khi tải lịch sử' });
+      res.status(500).json({ message: MESSAGES.HISTORY.LOAD_ERROR });
     }
   }
 
   async deleteHistory(req, res) {
     try {
       await historyService.deleteHistory(req.params.id, req.user.userId);
-      res.json({ message: 'Đã xóa lịch sử' });
+      res.json({ message: MESSAGES.HISTORY.DELETE_SUCCESS });
     } catch (error) {
       if (error.status) {
         return res.status(error.status).json({ message: error.message });
       }
       console.error('Lỗi khi xóa lịch sử:', error);
-      res.status(500).json({ message: 'Lỗi server khi xóa lịch sử' });
+      res.status(500).json({ message: MESSAGES.HISTORY.DELETE_ERROR });
     }
   }
 }
 
-module.exports = new HistoryController();
+export default new HistoryController();

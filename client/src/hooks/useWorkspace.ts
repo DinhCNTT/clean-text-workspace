@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { RefObject } from 'react';
-import { cleanHtmlUtils } from '../utils/htmlCleaner';
 import type { CleanOptions } from '../utils/htmlCleaner';
 import { copyRichTextToClipboard } from '../utils/clipboard';
 
@@ -58,17 +57,73 @@ export function useWorkspace({ inputRef, showToast, currentUser, onOpenAuth }: U
     }, 300);
   }, [inputRef]);
 
-  const handleClean = useCallback(() => {
+  const [progress, setProgress] = useState(0);
+
+  const handleClean = useCallback(async () => {
     if (!inputRef.current || !hasInput) return;
+    
     setIsProcessing(true);
-    setTimeout(() => {
-      const rawHtml = inputRef.current!.innerHTML;
-      const cleaned = cleanHtmlUtils(rawHtml, cleanOptions);
-      setOutputHtml(cleaned);
-      localStorage.setItem('draft_output', cleaned);
+    setProgress(0);
+    
+    const rawHtml = inputRef.current.innerHTML;
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    
+    try {
+      // 1. Gửi yêu cầu bắt đầu xử lý bất đồng bộ
+      const res = await fetch(`${API_URL}/jobs/process`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          rawHtml,
+          options: cleanOptions
+        })
+      });
+      
+      if (!res.ok) {
+        throw new Error('Không thể khởi tạo tiến trình xử lý.');
+      }
+      
+      const { jobId } = await res.json();
+      
+      // 2. Lắng nghe tiến trình qua Server-Sent Events (SSE)
+      const eventSource = new EventSource(`${API_URL}/jobs/${jobId}/progress`, {
+        withCredentials: true
+      });
+      
+      eventSource.addEventListener('progress', (e: any) => {
+        const data = JSON.parse(e.data);
+        setProgress(data.progress || 0);
+      });
+      
+      eventSource.addEventListener('completed', (e: any) => {
+        const data = JSON.parse(e.data);
+        setOutputHtml(data.cleanedHtml);
+        localStorage.setItem('draft_output', data.cleanedHtml);
+        showToast('Làm sạch văn bản thành công!', 'success');
+        setIsProcessing(false);
+        setProgress(100);
+        eventSource.close();
+      });
+      
+      eventSource.addEventListener('failed', (e: any) => {
+        const data = JSON.parse(e.data);
+        showToast(data.error || 'Lỗi xử lý ngầm.', 'error');
+        setIsProcessing(false);
+        eventSource.close();
+      });
+
+      eventSource.addEventListener('error', () => {
+        showToast('Lỗi đường truyền hoặc tiến trình bị ngắt.', 'error');
+        setIsProcessing(false);
+        eventSource.close();
+      });
+      
+    } catch (error: any) {
+      showToast(error.message || 'Lỗi khi gửi yêu cầu.', 'error');
       setIsProcessing(false);
-    }, 200);
-  }, [hasInput, cleanOptions, inputRef]);
+    }
+  }, [hasInput, cleanOptions, inputRef, showToast]);
 
   const handleCopy = useCallback(async () => {
     if (!outputHtml) return;
@@ -95,14 +150,13 @@ export function useWorkspace({ inputRef, showToast, currentUser, onOpenAuth }: U
 
     setIsProcessing(true);
     try {
-      const token = localStorage.getItem('token');
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
       const res = await fetch(`${API_URL}/history`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({
           contentHtml: outputHtml
         })
@@ -135,6 +189,7 @@ export function useWorkspace({ inputRef, showToast, currentUser, onOpenAuth }: U
     hasInput,
     copySuccess,
     isProcessing,
+    progress,
     cleanOptions, setCleanOptions,
     handleInput, handleClean, handleCopy, handleSaveHistory, handleClear
   };

@@ -5,7 +5,7 @@ import styles from './AuthModal.module.css';
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: (token: string, user: any) => void;
+  onSuccess: (user: any) => void;
 }
 
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => {
@@ -33,6 +33,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
       const res = await fetch(`${API_URL}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(payload),
       });
 
@@ -43,7 +44,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
       }
 
       if (isLogin) {
-        onSuccess(data.token, data.user);
+        onSuccess(data.user);
         onClose();
       } else {
         // Sau khi đăng ký thành công, tự động chuyển sang form đăng nhập

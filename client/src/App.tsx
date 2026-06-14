@@ -3,12 +3,14 @@ import { useTheme } from './hooks/useTheme';
 import { useAuth } from './hooks/useAuth';
 import { useScroll } from './hooks/useScroll';
 import { useWorkspace } from './hooks/useWorkspace';
+import { Sparkles } from 'lucide-react';
 
 import Header from './components/Header';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AuthModal from './components/AuthModal';
 import HistoryDrawer from './components/HistoryDrawer';
+import ChatDrawer from './components/ChatDrawer';
 
 import InputEditor from './components/workspace/InputEditor';
 import OutputDisplay from './components/workspace/OutputDisplay';
@@ -33,10 +35,11 @@ function App() {
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isHistoryDrawerOpen, setIsHistoryDrawerOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const {
     outputHtml, setOutputHtml,
-    hasInput, copySuccess, isProcessing,
+    hasInput, copySuccess, isProcessing, progress,
     cleanOptions, setCleanOptions,
     handleInput, handleClean, handleCopy, handleSaveHistory, handleClear
   } = useWorkspace({
@@ -96,6 +99,8 @@ function App() {
             copySuccess={copySuccess} 
             onCopy={handleCopy} 
             showToast={showToast} 
+            isProcessing={isProcessing}
+            progress={progress}
           />
         </div>
 
@@ -139,12 +144,28 @@ function App() {
       <HistoryDrawer 
         isOpen={isHistoryDrawerOpen} 
         onClose={() => setIsHistoryDrawerOpen(false)} 
+        currentUser={currentUser}
         onSelect={(html) => { 
           setOutputHtml(html); 
           setIsHistoryDrawerOpen(false); 
           showToast('Đã tải lịch sử', 'success'); 
         }} 
       />
+
+      <ChatDrawer 
+        isOpen={isChatOpen} 
+        onClose={() => setIsChatOpen(false)} 
+        currentUser={currentUser}
+      />
+
+      {/* ── FLOATING AI CHAT BUTTON ── */}
+      <button
+        onClick={() => setIsChatOpen(true)}
+        className="fixed bottom-6 right-6 z-30 flex items-center justify-center w-14 h-14 bg-gradient-to-br from-indigo-500 to-pink-500 text-white rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 group border border-white/20"
+        title="Hỏi AI về tài liệu"
+      >
+        <Sparkles className="group-hover:rotate-12 transition-transform duration-300" size={20} />
+      </button>
 
       <Toast toast={toast} />
       

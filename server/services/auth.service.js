@@ -1,17 +1,19 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+import jwt from 'jsonwebtoken';
+import User from '../models/user.model.js';
+import { APP_CONSTANTS } from '../common/constants/app.constant.js';
+const { MESSAGES, JWT } = APP_CONSTANTS;
 
 class AuthService {
   async registerUser(email, username, password) {
     // Validate
     if (!email || !username || !password) {
-      throw Object.assign(new Error('Vui lòng nhập đầy đủ thông tin.'), { status: 400 });
+      throw Object.assign(new Error(MESSAGES.AUTH.MISSING_INFO), { status: 400 });
     }
 
     // Check existing user
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
     if (existingUser) {
-      throw Object.assign(new Error('Email hoặc Username đã tồn tại.'), { status: 400 });
+      throw Object.assign(new Error(MESSAGES.AUTH.EMAIL_USERNAME_EXISTS), { status: 400 });
     }
 
     // Create user
@@ -24,30 +26,34 @@ class AuthService {
   async loginUser(email, password) {
     // Validate
     if (!email || !password) {
-      throw Object.assign(new Error('Vui lòng nhập email và mật khẩu.'), { status: 400 });
+      throw Object.assign(new Error(MESSAGES.AUTH.MISSING_INFO), { status: 400 });
     }
 
     // Find user
     const user = await User.findOne({ email });
     if (!user) {
-      throw Object.assign(new Error('Email không tồn tại.'), { status: 400 });
+      throw Object.assign(new Error(MESSAGES.AUTH.EMAIL_NOT_FOUND), { status: 400 });
     }
 
     // Check password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      throw Object.assign(new Error('Mật khẩu không chính xác.'), { status: 400 });
+      throw Object.assign(new Error(MESSAGES.AUTH.PASSWORD_INCORRECT), { status: 400 });
     }
 
     // Generate JWT
     const token = jwt.sign(
       { userId: user._id, username: user.username },
-      process.env.JWT_SECRET || 'secret_key_12345',
-      { expiresIn: '7d' }
+      process.env.JWT_SECRET || JWT.DEFAULT_SECRET,
+      { expiresIn: JWT.EXPIRES_IN }
     );
 
     return { user, token };
   }
+
+  async getUserById(id) {
+    return await User.findById(id);
+  }
 }
 
-module.exports = new AuthService();
+export default new AuthService();
