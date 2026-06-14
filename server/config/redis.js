@@ -12,6 +12,8 @@ const redisConfig = {
 
 if (REDIS_PASSWORD) {
   redisConfig.password = REDIS_PASSWORD;
+  // Upstash và các Redis Cloud provider đều yêu cầu TLS khi có password
+  redisConfig.tls = {};
 }
 
 const redisConnection = new Redis(redisConfig);
