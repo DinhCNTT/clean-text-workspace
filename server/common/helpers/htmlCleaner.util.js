@@ -37,13 +37,18 @@ const cleanHtmlUtils = (htmlString, options = {}) => {
     });
   }
 
-  // 4. Chuyển đổi danh sách (ul, ol) thành các paragraph rời
-  $('ul, ol').each((_, el) => {
-    const items = [];
-    $(el).find('> li').each((_, li) => {
-      items.push(`<p>${$(li).html().trim()}</p>`);
+  // 4. Chuyển đổi danh sách (ul, ol, li) thành các paragraph rời
+  $('li').each((_, el) => {
+    const $el = $(el);
+    // Tránh lồng các thẻ block bên trong thẻ p mới bằng cách unwrap chúng
+    $el.find('p, div, h1, h2, h3, h4, h5, h6').each((_, child) => {
+      $(child).replaceWith($(child).html() || '');
     });
-    $(el).replaceWith(items.join(''));
+    $el.replaceWith(`<p>${$el.html().trim()}</p>`);
+  });
+
+  $('ul, ol').each((_, el) => {
+    $(el).replaceWith($(el).html() || '');
   });
 
   // 5. Chuyển đổi div thành p

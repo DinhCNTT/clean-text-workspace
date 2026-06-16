@@ -39,17 +39,31 @@ const flattenLiContent = (li: Element, doc: Document): string => {
 };
 
 const convertListsToParagraphs = (doc: Document) => {
-  const lists = Array.from(doc.body.querySelectorAll('ul, ol')).reverse();
+  // Chuyển đổi tất cả thẻ li thành p
+  const lis = Array.from(doc.body.querySelectorAll('li'));
+  for (const li of lis) {
+    const p = doc.createElement('p');
+    
+    // Tìm và unwrap các thẻ block con bên trong li
+    const childBlocks = Array.from(li.querySelectorAll('p, div, h1, h2, h3, h4, h5, h6'));
+    for (const block of childBlocks) {
+      const fragment = doc.createDocumentFragment();
+      while (block.firstChild) {
+        fragment.appendChild(block.firstChild);
+      }
+      block.parentNode?.replaceChild(fragment, block);
+    }
+    
+    p.innerHTML = li.innerHTML;
+    li.parentNode?.replaceChild(p, li);
+  }
+
+  // Loại bỏ các thẻ ul, ol
+  const lists = Array.from(doc.body.querySelectorAll('ul, ol'));
   for (const list of lists) {
-    if (!doc.body.contains(list)) continue;
-
-    const items = Array.from(list.querySelectorAll(':scope > li'));
     const fragment = doc.createDocumentFragment();
-
-    for (const li of items) {
-      const p = doc.createElement('p');
-      p.innerHTML = flattenLiContent(li, doc);
-      fragment.appendChild(p);
+    while (list.firstChild) {
+      fragment.appendChild(list.firstChild);
     }
     list.parentNode?.replaceChild(fragment, list);
   }
