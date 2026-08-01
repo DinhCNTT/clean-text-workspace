@@ -10,7 +10,7 @@ export interface CleanOptions {
   plainTextOnly?: boolean;
 }
 
-const flattenLiContent = (li: Element, doc: Document): string => {
+export const flattenLiContent = (li: Element, doc: Document): string => {
   const clone = li.cloneNode(true) as HTMLElement;
 
   const processBlocks = (el: HTMLElement) => {

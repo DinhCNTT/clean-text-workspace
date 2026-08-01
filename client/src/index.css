@@ -10,6 +10,14 @@
 
 :root {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --primary: #6366f1;
+  --secondary: #ec4899;
+  --bg-light: #f8fafc;
+  --bg-dark: #0f172a;
+  --border-light: #e2e8f0;
+  --border-dark: #334155;
+  --text-light: #1e293b;
+  --text-dark: #f1f5f9;
 }
 
 html {
@@ -20,8 +28,16 @@ body {
   margin: 0;
   padding: 0;
   font-family: var(--font-sans);
+  background-color: var(--bg-light);
+  color: var(--text-light);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dark body {
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
 }
 
 /* Custom scrollbar */
@@ -32,59 +48,100 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 .dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
-/* Animated gradient background */
+/* Subtle animated mesh background */
 .bg-mesh {
   background: 
-    radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 50% 50%, rgba(236, 72, 153, 0.06) 0%, transparent 70%),
+    radial-gradient(ellipse at 15% 15%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 85%, rgba(236, 72, 153, 0.04) 0%, transparent 50%),
     #f8fafc;
 }
 
 .dark .bg-mesh {
   background: 
-    radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 80%, rgba(168, 85, 247, 0.06) 0%, transparent 60%),
-    radial-gradient(ellipse at 50% 50%, rgba(236, 72, 153, 0.04) 0%, transparent 70%),
-    #0a0f1e;
+    radial-gradient(ellipse at 15% 15%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 85%, rgba(236, 72, 153, 0.03) 0%, transparent 50%),
+    #0f172a;
 }
 
-/* Glass card */
-.glass-card {
-  background: rgba(255, 255, 255, 0.7);
+/* Simple clean card - static borders, no glows, only shadow expansion on hover */
+.clean-card {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: 1.5rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  will-change: transform;
+}
+
+.dark .clean-card {
+  background: #1e293b;
+  border: 1px solid var(--border-dark);
+}
+
+.clean-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05);
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.dark .clean-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+/* Focus outline highlighting key feature in editor */
+.editor-focused {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1) !important;
+}
+.dark .editor-focused {
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15) !important;
+}
+
+/* Glassmorphism strictly for Hero CTA & Navbar */
+.glass-navbar {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.dark .glass-navbar {
+  background: rgba(15, 23, 42, 0.85);
+  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+}
+
+.glass-button {
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  transition: all 0.2s ease;
 }
-.dark .glass-card {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(99, 102, 241, 0.12);
-}
-
-.glass-card-pink {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(236, 72, 153, 0.2);
-}
-.dark .glass-card-pink {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(236, 72, 153, 0.12);
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
 }
 
-/* Glow effects */
-.glow-indigo {
-  box-shadow: 0 0 30px rgba(99, 102, 241, 0.1), 0 1px 3px rgba(0,0,0,0.1);
-}
-.dark .glow-indigo {
-  box-shadow: 0 0 30px rgba(99, 102, 241, 0.15), 0 1px 3px rgba(0,0,0,0.3);
+/* Gradient styling - ONLY for Hero Headline & CTA hovers */
+.hero-gradient-text {
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.glow-pink {
-  box-shadow: 0 0 30px rgba(236, 72, 153, 0.1), 0 1px 3px rgba(0,0,0,0.1);
+.btn-gradient {
+  background: var(--primary);
+  color: #ffffff;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  will-change: transform;
 }
-.dark .glow-pink {
-  box-shadow: 0 0 30px rgba(236, 72, 153, 0.1), 0 1px 3px rgba(0,0,0,0.3);
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
 }
 
 /* Text area white background - keep pristine for content */
@@ -92,72 +149,52 @@ body {
   background: #ffffff;
   color: #1e293b;
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.8;
+}
+.dark .content-area {
+  background: #1e293b;
+  color: #f1f5f9;
 }
 .content-area:focus {
   outline: none;
 }
 
-/* Button animations */
-.btn-primary {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.btn-primary::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
-  transform: translateX(-100%);
-  transition: transform 0.4s ease;
-}
-.btn-primary:hover::before {
-  transform: translateX(100%);
-}
-.btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
-}
-.btn-primary:active {
-  transform: translateY(0);
-}
-
-/* Floating label animation */
+/* Float tag indicator */
 .label-tag {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   padding: 4px 12px;
   border-radius: 999px;
+  background: rgba(99, 102, 241, 0.08);
+  color: var(--primary);
+  border: 1px solid rgba(99, 102, 241, 0.15);
 }
 
-/* Word count badge */
-.word-count {
-  font-size: 11px;
-  color: #64748b;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-.dark .word-count {
-  color: #94a3b8;
+.dark .label-tag {
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.25);
 }
 
-/* Fade in animation */
-@keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-fade-in {
-  animation: fadeSlideIn 0.3s ease forwards;
+/* Scroll Fade In Animation using simple Intersection Observer trigger classes */
+.fade-in-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  will-change: opacity, transform;
 }
 
-/* Pulse dot */
+.fade-in-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 @keyframes pulseDot {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.5; transform: scale(0.8); }
@@ -170,36 +207,18 @@ body {
   animation: pulseDot 2s ease-in-out infinite;
 }
 
-/* Header title gradient - Removed infinite animation for performance */
-.gradient-title {
-  background: linear-gradient(135deg, #4f46e5, #9333ea, #db2777, #4f46e5);
-  background-size: 100% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Clean slider/carousel navigation dots */
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #cbd5e1;
+  transition: background-color 0.25s, transform 0.25s;
 }
-.dark .gradient-title {
-  background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6, #818cf8);
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+.dark .carousel-dot {
+  background-color: #475569;
 }
-
-/* Slide up animation for modals */
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-.animate-slide-up {
-  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* Scale in center animation */
-@keyframes scaleInCenter {
-  0% { transform: scale(0); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-.scale-in-center {
-  animation: scaleInCenter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+.carousel-dot.active {
+  background-color: var(--primary);
+  transform: scale(1.2);
 }
